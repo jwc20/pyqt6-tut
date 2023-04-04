@@ -8,13 +8,16 @@ from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QMenu
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.show()
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.contextMenuEvent)
 
-    def contextMenuEvent(self, e):
+    def contextMenuEvent(self, pos):
         context = QMenu(self)
         context.addAction(QAction("test 1", self))
         context.addAction(QAction("test 2", self))
         context.addAction(QAction("test 3", self))
-        context.exec(e.globalPos())
+        context.exec(self.mapToGlobal(pos))
 
 
 app = QApplication(sys.argv)
