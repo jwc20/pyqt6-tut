@@ -5,13 +5,16 @@ from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
 
 
-
+# Subclass QMainWindow to customize your application's main window.
 class MainWindow(QMainWindow): 
     def __init__(self): 
         # Call the constructor of the parent class. (QMainWindow) to set up the main window.
         super().__init__() 
         self.setWindowTitle("My App") 
         button = QPushButton("Press Me!") 
+
+        # Set the fixed size of the window. 
+        self.setFixedSize(QSize(400, 300))
 
         # Set the central widget of the main window to be the button.
         self.setCentralWidget(button) 
