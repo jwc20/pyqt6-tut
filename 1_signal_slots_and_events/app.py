@@ -11,26 +11,30 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("My App")
 
         self.button = QPushButton("Press Me!")
-        self.button.setCheckable(True)
-        # self.button.clicked.connect(self.the_button_was_clicked)
+        # self.button.setCheckable(True)
+        self.button.clicked.connect(self.the_button_was_clicked)
         # self.button.toggled.connect(self.the_button_was_toggled)
-        self.button.released.connect(self.the_button_was_released)
-        self.button.setChecked(self.button_is_checked)
+        # self.button.released.connect(self.the_button_was_released)
+        # self.button.setChecked(self.button_is_checked)
 
         # Set the central widget of the Window.
         self.setCentralWidget(self.button)
 
     # Custom slot
     def the_button_was_clicked(self):
-        print("Clicked!")
+        # print("Clicked!")
+        self.button.setText("You already clicked me!")
+        self.button.setEnabled(False)
 
-    def the_button_was_toggled(self, checked):
-        self.button_is_checked = checked
-        print("Checked?", checked)
+        self.setWindowTitle("My Oneshot App")
 
-    def the_button_was_released(self):
-        self.button_is_checked = self.button.isChecked()
-        print(self.button_is_checked)
+    # def the_button_was_toggled(self, checked):
+    #     self.button_is_checked = checked
+    #     print("Checked?", checked)
+
+    # def the_button_was_released(self):
+    #     self.button_is_checked = self.button.isChecked()
+    #     print(self.button_is_checked)
 
 
 app = QApplication(sys.argv)
