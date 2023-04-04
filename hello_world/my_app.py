@@ -1,6 +1,7 @@
 # Needed for access to command line arguments.
 import sys 
 
+# Import required PyQt6 modules.
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
 
