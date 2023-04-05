@@ -11,9 +11,10 @@ class MainWindow(QMainWindow):
 
         layout = QGridLayout() 
 
-        layout.addWidget(Color('red')) 
-        layout.addWidget(Color('green'))
-        layout.addWidget(Color('blue')) 
+        layout.addWidget(Color('red'), 0, 0) 
+        layout.addWidget(Color('green'), 0, 1) 
+        layout.addWidget(Color('blue'), 1, 1) 
+        layout.addWidget(Color('yellow'), 2, 1)
 
         widget = QWidget()
         widget.setLayout(layout) 
