@@ -13,6 +13,10 @@ class MainWindow(QMainWindow):
         layout2 = QVBoxLayout() 
         layout3 = QVBoxLayout() 
 
+
+        layout1.setContentsMargins(0,0,0,0)
+        layout1.setSpacing(20)
+
         layout2.addWidget(Color('red')) 
         layout2.addWidget(Color('green'))
         layout2.addWidget(Color('blue')) 
