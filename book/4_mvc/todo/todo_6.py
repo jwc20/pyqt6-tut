@@ -1,17 +1,12 @@
 import sys
-
-from PyQt6 import QtCore, QtGui, QtWidgets, uic
-from PyQt6.QtCore import Qt, QAbstractListModel
-
-import os
 import json
+from PyQt6 import QtCore, QtGui, QtWidgets, uic
+from PyQt6.QtCore import Qt
 
-basedir = os.path.dirname(__file__)
-
-tick = QtGui.QImage(os.path.join(basedir, "tick.png"))
 
 qt_creator_file = "mainwindow.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qt_creator_file)
+tick = QtGui.QImage("tick.png")
 
 
 class TodoModel(QtCore.QAbstractListModel):
@@ -20,61 +15,56 @@ class TodoModel(QtCore.QAbstractListModel):
         self.todos = todos or []
 
     def data(self, index, role):
-        """
-        This function is called by the view to get the data to display.
-        """
         if role == Qt.ItemDataRole.DisplayRole:
-            status, text = self.todos[index.row()]
+            _, text = self.todos[index.row()]
             return text
 
         if role == Qt.ItemDataRole.DecorationRole:
-            status, text = self.todos[index.row()]
+            status, _ = self.todos[index.row()]
             if status:
                 return tick
 
     def rowCount(self, index):
-        """
-        This function is called by the view to get the number of rows.
-        """
         return len(self.todos)
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
-        super().__init__()
+        super(MainWindow, self).__init__()
         self.setupUi(self)
         self.model = TodoModel()
         self.load()
         self.todoView.setModel(self.model)
-
-        # Connect the button
         self.addButton.pressed.connect(self.add)
         self.deleteButton.pressed.connect(self.delete)
         self.completeButton.pressed.connect(self.complete)
 
     def add(self):
         """
-        Add an item to our todo list, getting the text from the QLineEdit .todoEdit and then clearing it.
+        Add an item to our todo list, getting the text from the QLineEdit .todoEdit
+        and then clearing it.
         """
         text = self.todoEdit.text()
-
-        # Remove whitespace from the ends of the string.
-        text = text.strip()
-        if text:  # If the string is not empty
+        if text:  # Don't add empty strings.
+            # Access the list via the model.
             self.model.todos.append((False, text))
-            self.model.layoutChanged.emit()  # Emit a signal to tell the view that the model has changed.
+            # Trigger refresh.
+            self.model.layoutChanged.emit()
+            # Empty the input
             self.todoEdit.setText("")
+            self.save()
 
     def delete(self):
-        """
-        Delete an item from our todo list, getting the text from the QLineEdit .todoEdit and then clearing it.
-        """
         indexes = self.todoView.selectedIndexes()
         if indexes:
+            # Indexes is a list of a single item in single-select mode.
             index = indexes[0]
+            # Remove the item and refresh.
             del self.model.todos[index.row()]
             self.model.layoutChanged.emit()
+            # Clear the selection (as it is no longer valid).
             self.todoView.clearSelection()
+            self.save()
 
     def complete(self):
         indexes = self.todoView.selectedIndexes()
@@ -83,23 +73,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             row = index.row()
             status, text = self.model.todos[row]
             self.model.todos[row] = (True, text)
-
+            # .dataChanged takes top-left and bottom right, which are equal
+            # for a single selection.
             self.model.dataChanged.emit(index, index)
+            # Clear the selection (as it is no longer valid).
             self.todoView.clearSelection()
+            self.save()
 
-    def load(self): 
-        try: 
-            with open('data.db', 'r') as f: 
+    def load(self):
+        try:
+            with open("data.db", "r") as f:
                 self.model.todos = json.load(f)
-        except Exception: 
+        except Exception:
             pass
 
-    def save(self): 
-        with open('data.json', 'w') as f: 
-            json.dump(self.model.todos, f) 
-
-
-
+    def save(self):
+        with open("data.db", "w") as f:
+            data = json.dump(self.model.todos, f)
 
 
 app = QtWidgets.QApplication(sys.argv)
