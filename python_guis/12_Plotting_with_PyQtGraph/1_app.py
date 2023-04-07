@@ -23,7 +23,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
         # pen = pg.mkPen(color=(255, 0, 0))
-        pen = pg.mkPen(color=(255, 0, 0), width=15, style=QtCore.Qt.PenStyle.DashLine)
+        pen = pg.mkPen(color=(255, 0, 0), width=2, style=QtCore.Qt.PenStyle.DashDotDotLine)
+        self.graphWidget.plot(hour, temperature, pen=pen, symbol="+", symbolSize=30, symbolBrush=("b"))
 
 
         self.graphWidget.plot(hour, temperature, pen=pen)
