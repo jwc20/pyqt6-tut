@@ -38,8 +38,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.graphWidget.setLabel("bottom", "Hour of Day", **style)
 
 
-        # Plot
+        # Legend
         self.graphWidget.addLegend()
+
+        # Grid 
+        self.graphWidget.showGrid(x=True, y=True)
+
+        # Plot
         self.graphWidget.plot(
             hour,
             temperature,
