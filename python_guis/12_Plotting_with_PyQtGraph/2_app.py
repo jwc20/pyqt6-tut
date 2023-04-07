@@ -44,6 +44,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # Grid 
         self.graphWidget.showGrid(x=True, y=True)
 
+        # Axis Limits 
+        self.graphWidget.setXRange(0,11, padding=0) 
+        self.graphWidget.setYRange(20, 55, padding=0)
+
         # Plot
         self.graphWidget.plot(
             hour,
