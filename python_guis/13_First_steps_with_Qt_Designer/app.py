@@ -1,20 +1,16 @@
-import os
 import sys
-
-from PyQt6 import QtWidgets, uic
-
-
-basedir = os.path.dirname(os.path.abspath(__file__))
+from PyQt6 import QtWidgets
+from MainWindow import Ui_MainWindow
 
 
-class MainWindow(QtWidgets.QMainWindow): 
-    def __init__(self, *args, **kwargs): 
-        super().__init__(*args, **kwargs) 
-        uic.loadUi(os.path.join(basedir, "mainwindow.ui"), self)
-
+class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setupUi(self)
 
 
 app = QtWidgets.QApplication(sys.argv)
+
 window = MainWindow()
 window.show()
 app.exec()
